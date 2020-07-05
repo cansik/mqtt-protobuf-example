@@ -27,7 +27,7 @@ namespace SecondClient
             };
                 
             //client.Publish("hello/world", "hello world");
-            
+
             client.Publish("hello/status", status);
 
             Console.WriteLine("all done!");

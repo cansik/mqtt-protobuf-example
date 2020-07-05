@@ -21,7 +21,7 @@ namespace FirstClient
             {
                 Console.WriteLine($"New Message: {message}");
             });
-            
+
             client.Subscribe<Status>("hello/status", (sender, topic, message) =>
             {
                 Console.WriteLine($"New position: {message.Position.X}, {message.Position.Y}");
