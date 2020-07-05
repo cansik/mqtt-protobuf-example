@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using Google.Protobuf;
 using SimnetLib.Network;
 
 namespace SimnetLib
@@ -44,6 +45,12 @@ namespace SimnetLib
             {
                 data = Encoding.UTF8.GetBytes((string)(object)payload);
             }
+            else if(typeof(T) == typeof(IMessage))
+            {
+                // protobuf message
+                var msg = (IMessage)payload;
+                data = msg.ToByteArray();
+            }
             
             _bus.Publish(topic, data);
         }
@@ -60,6 +67,12 @@ namespace SimnetLib
             if (subscription.Type == typeof(string))
             {
                 value = Encoding.UTF8.GetString(payload);
+            }
+            else if(subscription.Type == typeof(IMessage))
+            {
+                // protobuf message
+                var msg = (IMessage)Activator.CreateInstance(subscription.Type);
+                
             }
             
             handler?.DynamicInvoke(this, topic, value);

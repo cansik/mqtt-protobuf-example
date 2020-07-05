@@ -16,8 +16,19 @@ namespace SecondClient
             client.Connect(IPAddress.Loopback, 1883);
             
             Thread.Sleep(1000);
+
+            var status = new Status
+            {
+                Enabled = true,
+                Position = new Vector3()
+                {
+                    X = 0.5f, Y =  1.5f, Z = 2.4f
+                }
+            };
+                
+            //client.Publish("hello/world", "hello world");
             
-            client.Publish("hello/world", "hello world");
+            client.Publish("hello/status", status);
 
             Console.WriteLine("all done!");
         }
