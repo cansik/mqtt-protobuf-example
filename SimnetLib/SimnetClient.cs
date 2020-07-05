@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
-using Google.Protobuf;
+using ProtoBuf;
 using SimnetLib.Network;
 
 namespace SimnetLib
@@ -45,11 +47,14 @@ namespace SimnetLib
             {
                 data = Encoding.UTF8.GetBytes((string)(object)payload);
             }
-            else if(typeof(T) == typeof(IMessage))
+            else if(typeof(T).IsProto())
             {
                 // protobuf message
-                var msg = (IMessage)payload;
-                data = msg.ToByteArray();
+                using (var stream = new MemoryStream())
+                {
+                    Serializer.Serialize(stream, payload);
+                    data = stream.ToArray();
+                }
             }
             
             _bus.Publish(topic, data);
@@ -68,11 +73,13 @@ namespace SimnetLib
             {
                 value = Encoding.UTF8.GetString(payload);
             }
-            else if(subscription.Type == typeof(IMessage))
+            else if(subscription.Type.IsProto())
             {
                 // protobuf message
-                var msg = (IMessage)Activator.CreateInstance(subscription.Type);
-                
+                using (var stream = new MemoryStream(payload))
+                {
+                    value = Serializer.Deserialize(stream, Activator.CreateInstance(subscription.Type));
+                }
             }
             
             handler?.DynamicInvoke(this, topic, value);
