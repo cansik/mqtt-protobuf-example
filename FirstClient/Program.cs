@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SimnetLib;
 using SimnetLib.Network;
+using SimnetLib.Protocol;
 
 namespace FirstClient
 {

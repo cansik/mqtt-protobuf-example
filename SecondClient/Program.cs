@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using SimnetLib;
 using SimnetLib.Network;
+using SimnetLib.Protocol;
 
 namespace SecondClient
 {
