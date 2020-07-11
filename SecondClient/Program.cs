@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Threading;
+using Simnet.Protocol;
 using SimnetLib;
 using SimnetLib.Network;
-using SimnetLib.Protocol;
 
 namespace SecondClient
 {

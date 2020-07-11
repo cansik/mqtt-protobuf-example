@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Threading;
-using System.Threading.Tasks;
+using Simnet.Protocol;
 using SimnetLib;
 using SimnetLib.Network;
-using SimnetLib.Protocol;
 
 namespace FirstClient
 {
