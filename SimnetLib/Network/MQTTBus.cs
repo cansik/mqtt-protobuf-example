@@ -10,8 +10,10 @@ using MQTTnet.Protocol;
 
 namespace SimnetLib.Network
 {
-    public class MQTTBus : IBus
+    public class MQTTBus : INetworkBus
     {
+        // todo: make all Ibus methods async!
+        
         private IMqttClient _mqttClient;
 
         public MQTTBus()

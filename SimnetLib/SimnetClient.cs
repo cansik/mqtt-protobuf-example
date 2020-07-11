@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
 using ProtoBuf;
@@ -13,29 +12,29 @@ namespace SimnetLib
     
     public class SimnetClient
     {
-        private IBus _bus;
+        private INetworkBus _networkBus;
         private Dictionary<string, Subscription> _subscriptions;
 
         public string ClientId { get; private set; }
 
-        public SimnetClient(IBus bus, string clientId)
+        public SimnetClient(INetworkBus networkBus, string clientId)
         {
-            _bus = bus;
+            _networkBus = networkBus;
             _subscriptions = new Dictionary<string, Subscription>();
             ClientId = clientId;
         }
 
         public void Connect(IPAddress host, int port)
         {
-            _bus.MessageReceived += BusOnMessageReceived;
+            _networkBus.MessageReceived += NetworkBusOnMessageReceived;
 
-            _bus.Connect(host, port, ClientId);
+            _networkBus.Connect(host, port, ClientId);
         }
 
         public void Subscribe<T>(string topic, MessageEventHandler<T> handler) where T : class
         {
             _subscriptions.Add(topic, new Subscription(typeof(T), handler));
-            _bus.Subscribe(topic);
+            _networkBus.Subscribe(topic);
         }
 
         public void Publish<T>(string topic, T payload) where T : class
@@ -57,10 +56,10 @@ namespace SimnetLib
                 }
             }
             
-            _bus.Publish(topic, data);
+            _networkBus.Publish(topic, data);
         }
 
-        private void BusOnMessageReceived(object sender, string topic, byte[] payload)
+        private void NetworkBusOnMessageReceived(object sender, string topic, byte[] payload)
         {
             if (!_subscriptions.ContainsKey(topic)) return;
 

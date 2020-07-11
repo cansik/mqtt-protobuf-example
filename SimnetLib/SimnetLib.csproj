@@ -117,7 +117,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Model\Simnet.cs" />
-        <Compile Include="Network\IBus.cs" />
+        <Compile Include="Network\INetworkBus.cs" />
         <Compile Include="Network\MessageAssurance.cs" />
         <Compile Include="Network\MQTTBus.cs" />
         <Compile Include="ProtoExtensions.cs" />
